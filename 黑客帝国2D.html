@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>模拟黑客帝国2D</title>
+<!--此效果摘自：http://www.cnblogs.com/loce/p/5045580.html-->
+<style type="text/css">
+	canvas{
+		display: block;
+	}
+</style>
+</head>
+
+<body>
+	<canvas id="canvas"></canvas>
+	<script>
+		function $(id){
+			return document.getElementById(id);
+		}
+		//画布 的大小设置
+		var mywindow=window.screen;
+		var canvas=$("canvas");
+		canvas.width=mywindow.width;
+		canvas.height=mywindow.height;
+		
+		//要输出的信息
+		var str="0123456789";
+		str=str.split("");
+		var fontSize=16;//输出字体的大小
+		//每列显示多少个信息
+		var cols=canvas.width/fontSize;
+		//数组，统计下落的位置
+		var drops=[];
+		for(var i=0;i<cols;i++){
+			drops[i]=1;
+		}
+		//获取画布上下文环境
+		var ctx=canvas.getContext("2d");
+		function draw(){
+			/**
+			*这的黑客帝国：
+			* 获取页面的 大小 包括宽度和高度
+			* 用cols获取，能够按照宽度加载列数
+			* drops加载每一列的位置
+			* drops[2]=10 2为第二排的 top为10
+			*/
+			ctx.fillStyle="rgba(0,0,0,0.05)";//设置透明度，造成背景逐渐变成浓黑的效果，且随着定时器每启动一次就覆盖之前的页面，又能达到使数字逐渐消失的效果
+			ctx.fillRect(0,0,canvas.width,canvas.height);
+			
+			ctx.fillStyle="green";
+			ctx.font=fontSize+"px arial";//设置数字大小以及数字的字体font-family:arial
+			//在这里做了数字'移动'及重绘数字的效果
+			for(var i=0;i<cols;i++){
+				var text=str[ Math.floor( Math.random() * (str.length) ) ];//随机获取数组里面的数字
+				// console.info("x-"+i*fontSize);
+				// console.info("y-"+drops[i]*fontSize);
+				ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+				/*fillText() 方法在画布上绘制填色的文本。文本的默认颜色是黑色。
+				 * 用法：context.fillText(text,x,y,maxWidth);
+				 * 参数说明：
+				 * text 	规定在画布上输出的文本。
+				 * x 	开始绘制文本的 x 坐标位置（相对于画布）。
+				 * y 	开始绘制文本的 y 坐标位置（相对于画布）。
+				 * maxWidth 	可选。允许的最大文本宽度，以像素计。
+				 * 这一段说明摘自菜鸟教程：http://www.runoob.com/jsref/met-canvas-filltext.html
+				 */
+				if(drops[i]*fontSize > canvas.height || Math.random() > 0.95) drops[i] = 0;//当数字落到页面最底下或者随机数大于0.95时，把位置恢复到最上面
+				//控制下落的位置
+				drops[i]++;
+			}
+		}
+		setInterval(draw,33);
+	</script>
+</body>
+
+</html>
