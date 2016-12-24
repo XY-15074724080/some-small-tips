@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="{CHARSET}">
+		<title>使用 HTML5 的picture元素处理响应式图片</title>
+		<!--英文出处：http://webdesign.tutsplus.com/tutorials/quick-tip-how-to-use-html5-picture-for-responsive-images--cms-21015-->
+		<!--详细译文出处：http://www.w3cplus.com/html5/quick-tip-how-to-use-html5-picture-for-responsive-images.html-->
+		<!--另外的详细介绍的文章：http://www.wtoutiao.com/p/fbfjCC.html-->
+		<style>
+			/*问题：固定宽度，像素完美的网站设计已经离我们远去了。在宽屏显示器，互联网电视，多尺寸的平板电脑和智能手机的今天，我们的设计必须应付一切可能，将宽由320px向7680px转变。*/
+			img{/*目前常见的解决方案*/
+				max-width:100%;
+				height:auto;
+			}/*此代码使用max-width:100%的设置，以确保图像永远不会超越其父容器的宽度。如果父容器的宽度收缩小于图像的宽度，图像将随之缩小。height:auto的设置可以确保当有这种情况发生时，图像将以自身的宽高比保留。*/
+			/*这解决了一方面的问题，使我们能够在许多不同的情况下显示相同的图像。不过，这并不能让我们对不同的情况指定不同的图像。*/
+		</style>
+	</head>
+	<body>
+		<!--<img src="images/iphone_blank_2.png" title="目前常见的解决方案" />-->
+		
+		
+		
+		
+		<!--新的解决方案：<picture>-->
+		<!--如果<picture>元素与当前的<audio>和<video>元素协同合作将大大增强响应式图像的工作进程。它允许你放置多个source标签，以指定不同的图像文件名，进而根据不同的条件进行加载。-->
+		<!--
+			它可以让你根据以下条件加载完全不同的图像：
+				媒体特性结果如：视口的当前高度(viewport height)，宽度(width)，方向(orientation)。
+				像素密度
+
+			反过来这也意味着您可以：
+				加载适当大小图像的文件，使可用带宽得到充分利用。
+				加载不同裁剪并具有不同纵横比的图像，以适合于不同宽度的布局变化。
+				加载更高的像素密度，显示更高分辨率的图像。
+		-->
+		<!--
+			<picture>基本工作步骤如下：
+				1、创建<picture></picture>标签。
+				2、在这些标签内创建一个你想用来执行任何一个特性的<source>元素。
+				3、添加一个media属性，用来包含你想要的特性，如视口的当前高度(viewport height)，宽度(width)，方向(orientation)等。
+				4、添加一个srcset属性与相应的图像文件名相匹配，进行加载。如果你想提供不同的像素密度，例如Retina显示屏，你可以添加额外的文件名到你的srcset属性中，
+				5、添加一个回退的<img>元素。
+		-->
+		<!--<picture>
+			<source srcset="images/person3.jpg" media="(max-width:768px)">
+			<source srcset="images/bg_1.jpg">
+			<img srcset="images/bg_1.jpg" alt="使用 HTML5 的picture元素处理响应式图片" />
+		</picture>-->
+		
+		
+		
+		
+		
+		<!--你可能会注意到，在media属性使用的语法与创建CSS媒体特性中使用的语法一样。您可以使用相同的特性，这意味着你可以查询max-width，min-width，max-height，min-height，orientation等属性。-->
+		<!--同时，您也可以使用这些特性判断设备的方向，从而加载横向或纵向版本的图像，同时您也可以进行大小特性的混合。-->
+		<picture>
+			<source srcset="images/person3.jpg" media="(min-width:40em) and (orientation: landscape)">
+			<source srcset="images/bg_1.jpg" media="(min-width: 40em) and (orientation: portrait)">
+			<source srcset="images/iphone_blank_2.png" media="(max-width: 40em) and (orientation: landscape)">
+			<img srcset="images/iphone_blank_2.png" alt="使用 HTML5 的picture元素处理响应式图片" />
+			<!--<img srcset="images/bg_1.jpg" alt="使用 HTML5 的picture元素处理响应式图片" />--><!--<img>元素在<picture>内部用来当浏览器不支持时或者没有源标签匹配时的显示。在<picture>内使用<img>标签是必须得，如果你忘记了，将不会有图片显示出来。
+				用<img>来声明默认的图片显示。将<img>标签放到<picture>内的最后，浏览器在找到<img>标签之前会忽略<source>的声明。这个图片标签也需要你写上它的alt属性。-->
+		</picture>
+		<!--
+				上面的代码实现了可以在一个小的景观设备上加载小的，景观裁剪图像的版本。在大的景观设备上加载大的相同的图像版本。
+				这样，在小尺寸的小型设备上，或在大尺寸的大型设备上，该设备可以自主进行图像主导从而加载不同图像剪裁的版本。
+			-->
+			
+			
+			
+			
+			<!--如果您想为更高密度的显示器提供不同分辨率的图像版本，可以通过在srcset属性中添加额外的文件名来实现。例如，让我们来看看屏幕像素密度为2x的Retina 代码处理片断：-->
+			<!--<picture>
+				<source srcset="images/iphone_blank_2.png, images/person3.jpg 2x" media="(max-width:768px)">
+				<source srcset="images/bg_1.jpg, images/iphone_blank_2.png 2x">
+				<img srcset="images/bg_1.jpg, images/iphone_blank_2.png 2x" alt="使用 HTML5 的picture元素处理响应式图片" />
+			</picture>-->
+			
+			
+			
+			
+			<!--<picture>的支持性：Chrome，Firefox和Opera-->
+			<!--如果你现在就想使用<picture>元素可能还需要等待。你也可以使用Picturefill2.0;Filament 成员提供的一个polyfill：http://scottjehl.github.io/picturefill/-->
+	</body>
+</html>
