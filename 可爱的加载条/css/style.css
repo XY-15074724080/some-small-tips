@@ -4,6 +4,9 @@
 	float: left;
 	border: 1px solid gainsboro;
 }
+span{
+	display: inline-block;
+}
 /*第一个*/
 .box1{
 	width:80px;
@@ -15,7 +18,6 @@
     margin-top: -20px;
 }
 .box1 span{
-	display: inline-block;
 	width:8px;
 	height:50%;
 	border-radius: 4px;
@@ -56,7 +58,6 @@
     animation:changeBgColor 1s ease-in infinite alternate;
 }
 .box2 span{
-	display: inline-block;
 	width:10px;
 	height:10px;
 	position:absolute;
@@ -94,7 +95,6 @@
     margin-left: -40px;
 }
 .box3 span{
-	display:inline-block;
 	width:10px;
 	height:10px;
 	margin-right:5px;
@@ -139,7 +139,6 @@
     animation:xuanzhuan 1.2s ease-in infinite;
 }
 .box4 span{
-	display: inline-block;
 	width:15px;
 	height:15px;
 	background-color: lightgreen;
@@ -182,7 +181,6 @@
     overflow: hidden;
 }
 .box5 span{
-	display:inline-block;
 	position:absolute;
 	animation:yidong 1s ease infinite;
 }
@@ -223,12 +221,268 @@
 @keyframes jump{
 	50%{
 		top:0;
-		transform: scaleX(.7);
+		transform: scaleX(.7) scaleY(1.15);
 		background-color: lightblue;
 	}
 }
 @keyframes yidong{
 	100%{
 		transform: translate(-20px,20px);
+	}
+}
+
+/*第六个*/
+.box6{
+	width:80px;
+	height:80px;
+	position: relative;
+	left:50%;
+	top:50%;
+	margin-left: -25px;
+    margin-top: -25px;
+}
+.box6 span{
+	position: absolute;
+	border-radius:50%;
+}
+.box6 span:nth-child(1){
+	width:40px;
+	height:40px;
+	border-style:solid;
+	border-top:4px solid lightgreen;
+	border-bottom:4px solid lightgreen;
+	border-right-color:transparent;
+	border-left-color:transparent;
+	animation: xz .5s ease-in infinite;
+}
+.box6 span:nth-child(2){
+	width:20px;
+	height:20px;
+	background-color: lightgreen;
+	left: 12.5px;
+    top: 12.5px;
+    animation:suofang 1s ease-in infinite;
+}
+@keyframes xz{
+	0%{
+		transform: rotate(0deg);
+	}
+	100%{
+		transform: rotate(180deg);
+	}
+}
+@keyframes suofang{
+	0%{
+		transform: scale(1.1);
+		opacity: 1;
+		background: lightgreen;
+	}
+	50%{
+		transform: scale(.2);
+		opacity: .3;
+		background: lightblue;
+	}
+}
+
+/*第七个*/
+.box7{
+	width:60px;
+	height:60px;
+	position:relative;
+	left:50%;
+	top:50%;
+	margin-left: -25px;
+    margin-top: -25px;
+}
+.box7 span{
+	width:2px;
+	height:2px;
+	background-color: lightgreen;
+	opacity: .5;
+	border-radius:50%;
+	left: 25px;
+    top: 25px;
+	position:absolute;
+	animation: fangda 1s infinite .1s;
+}
+.box7 span:nth-child(2){
+	animation-delay: .3s;
+}
+.box7 span:nth-child(3){
+	animation-delay: .5s;
+}
+@keyframes fangda{
+	0%{
+		transform: scale(0);
+		opacity: 1;
+	}
+	100%{
+		transform: scale(30);
+		opacity: 0;
+	}
+}
+
+/*第八个*/
+.box8{
+	width:50px;
+	height:50px;
+	position:relative;
+	left:50%;
+	top:50%;
+	margin-left: -25px;
+    margin-top: -25px;
+    border:4px solid lightgreen;
+    animation: box8 2s ease infinite;
+}
+.box8:after{
+	display: inline-block;
+	content: "";
+	position: absolute;
+	width:50px;
+	height:2px;
+	background-color: lightgreen;
+	animation: box8span 2s ease infinite;
+}
+@keyframes box8{
+	0%{
+		transform: rotate(0deg);
+	}
+	30%{
+		transform: rotate(180deg);
+	}
+	50%{
+		transform: rotate(180deg);
+	}
+	70%{
+		transform: rotate(360deg);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
+}
+@keyframes box8span{
+	0%{
+		height:0px;
+	}
+	30%{
+		height:0px;
+		background: lightgreen;
+	}
+	50%{
+		height:50px;
+	}
+	70%{
+		height:50px;
+		background: lightblue;
+	}
+	100%{
+		height:0px;
+	}
+}
+
+/*第九个*/
+.box9{
+	width:100px;
+	height:80px;
+	position:relative;
+	top:50%;
+	left:50%;
+	margin-left:-30px;
+	margin-top:-30px;
+}
+.box9 span{
+	width:0px;
+	height:0px;
+	border-radius:50%;
+	border-width:8px;
+	border-color: lightgreen;
+	opacity: .7;
+	border-style: solid;
+	position: absolute;
+	top:20px;
+	animation: box9span .7s infinite;
+}
+.box9 span:nth-child(1){
+	opacity: 1;
+	border-width:25px;
+	border-right-color:transparent;
+	transform: rotate(45deg);
+	top:0;
+	background: transparent;
+	animation: eat .7s infinite;
+}
+.box9 span:nth-child(2){
+	opacity: 1;
+	border-width:25px;
+	border-right-color:transparent;
+	transform: rotate(-45deg);
+	top:0;
+	background: transparent;
+	animation: eat .7s infinite;
+}
+.box9 span:nth-child(3){
+	left:55px;
+}
+.box9 span:nth-child(4){
+	left:80px;
+}
+.box9 span:nth-child(5){
+	left:105px;
+}
+@keyframes eat{
+	50%{
+		transform: rotate(0deg);
+	}
+}
+@keyframes box9span{
+	100%{
+		transform: translateX(-25px);
+	}
+}
+
+/*第十个*/
+.box10{
+	width:80px;
+	height:80px;
+	position:relative;
+	top:50%;
+	left:50%;
+	margin-left:-20px;
+	margin-top:-30px;
+}
+.box10 span{
+	position:absolute;
+}
+.box10 span:nth-child(1){
+	width:40px;
+	height:40px;
+	border-radius:10%;
+	background: lightgreen;
+	animation: jumpdown .7s infinite;
+}
+.box10 span:nth-child(2){
+	width:30px;
+	height:5px;
+	border-radius:50%;
+	background: #eeeeee;
+	top: 50px;
+    left: 5px;
+    animation: scaley .7s infinite;
+}
+@keyframes jumpdown{
+	50%{
+		transform: translateY(15px) rotate(50deg);
+	}
+	55%{
+		border-bottom-right-radius:80%;
+	}
+	100%{
+		transform: translateY(0px) rotate(90deg);
+		border-bottom-right-radius:10%;
+	}
+}
+@keyframes scaley{
+	50%{
+		transform: scale(1.3,1);
 	}
 }
