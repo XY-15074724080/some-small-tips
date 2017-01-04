@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>canvas画时钟</title>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		
+		<script type="text/javascript">
+			var canvas = document.getElementById("canvas");
+			
+			var canvasWidth = 600;
+			var canvasHeight = canvasWidth;
+			canvas.width = canvasWidth;
+			canvas.height = canvasHeight;
+			
+			//获取到绘制的context对象       俗称上下文对象
+			var context = canvas.getContext("2d");
+			
+			function toDraw(){
+				/*小格总共60个，每个6度，大格总共12个，每个30度*/
+				
+				/*定义所画圆的中心点坐标及半径*/
+				var x = 200;
+				var y = 200;
+				var r = 150;
+				
+				/*获取当前的时分秒*/
+				var oDate = new Date();
+				var oHours = oDate.getHours();
+				var oMin = oDate.getMinutes();
+				var oSec = oDate.getSeconds();
+				
+				/*对时分秒进行处理，计算最终值，精确指针在表盘里的指向*/
+				var oHoursValue = (-90 + oHours*30 + oMin/2) * Math.PI/180;
+				//-90是为了把指针指向表盘12点方向，以此为初始计算点
+				//1小时有60分钟，60/2刚好是时针转一个刻度的度数
+				//最后乘以Math.PI/180是将数值转化为度数，因为context的arc方法的第三、四个参数是只能用度数的
+				var oMinValue = (-90 + oMin*6) * Math.PI/180;
+				var oSecValue = (-90 + oSec*6) * Math.PI/180;
+				
+				/*用来画表盘的函数*/
+				function biaopan(count,r,deg){
+					context.beginPath();
+					for(var i=0;i<count;i++){
+						context.moveTo(x,y);
+						context.arc(x,y,r,deg*i*Math.PI/180,deg*(i+1)*Math.PI/180,false);
+					}
+					context.closePath();
+					context.stroke();
+				}
+				function kedu(r){
+					/*只要刻度，所以定义一个白色的圆盘，遮盖住表盘的中间部分*/
+					context.fillStyle = "#fff";
+					context.beginPath();
+					context.moveTo(x,y);
+					context.arc(x,y,r,0,360*Math.PI/180,false);
+					context.closePath();
+					context.fill();
+				}
+				/*画小刻度*/
+				biaopan(60,r,6);
+				kedu(r-5);
+				
+				/*画大刻度*/
+				context.lineWidth = 3;
+				biaopan(12,r,30);
+				kedu(r-10);
+				
+				/*绘制指针的函数*/
+				function zhizhen(linewidth,r,value){
+					context.lineWidth = linewidth;
+					context.beginPath();
+					context.lineCap = "round";
+					context.moveTo(x,y);
+					context.arc(x,y,r,value,value,false);
+					context.closePath();
+					context.stroke();
+				}
+				/*开始绘制时针*/
+				zhizhen(5,r*10/20,oHoursValue);
+				
+				/*绘制分针*/
+				zhizhen(3,r*14/20,oMinValue);
+				
+				/*绘制秒针*/
+				zhizhen(1,r*18/20,oSecValue);
+			}
+			
+			setInterval(toDraw,1000);
+			toDraw();
+		</script>
+	</body>
+</html>
