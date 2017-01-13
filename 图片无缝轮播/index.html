@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>图片无缝轮播显示</title>
+<!--此效果出自：http://www.jb51.net/article/83348.htm-->
+	<script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+
+	<style type="text/css">
+            *{ 
+            	padding:0; 
+            	margin:0;
+            	}
+            ul li{
+            	list-style: none;
+            }
+            .banner { 
+            	width:300px; 
+            	height:440px; 
+            	margin:100px auto; 
+            	border:1px solid #808080; 
+            	position:relative; 
+            	overflow:hidden;
+            }
+            .banner .img{
+            	width:5000px; 
+            	position:absolute; 
+            	left:0px;
+            	top:0px;
+            	padding:0;
+            	margin:0;
+            }
+            .banner .img img{
+            	width:300px; 
+            	height:440px;
+            }
+            .banner .img li{
+            	float:left;
+            }
+            .banner .num { 
+            	position:absolute; 
+            	width:100%; 
+            	bottom:10px; 
+            	left:0px; 
+            	text-align:center; 
+            	font-size:0px;
+            	padding:0;
+            }
+            .banner .num li { 
+            	width:10px; 
+            	height:10px; 
+            	background-color:#888; 
+            	border-radius:50%;
+            	display:inline-block; 
+            	margin:0px 3px; 
+            	cursor:pointer;
+            }
+            .banner .num li.on {
+            	background-color: #ff6a00;
+            }
+            .banner .btn {
+            	width: 30px;
+            	height: 50px;
+            	background-color: #808080;
+            	opacity: 0.5; 
+            	filter:alpha(opacity:0.5); 
+            	position:absolute;
+            	top:50%; 
+            	margin-top:-25px;
+                cursor:pointer;
+                text-align:center;
+                line-height:50px;
+                font-size:40px;
+                color:#fff;
+                font-family:"宋体";
+                display:none;
+            }
+            .banner .btn_l { 
+            	left:0px;
+            }
+            .banner .btn_r {
+            	right:0px;
+            }
+            .banner:hover .btn { 
+            	display:block;
+            }
+        </style>
+
+</head>
+<body>
+	<div class="banner">
+            <ul class="img">
+                <li><img src="image/1.jpg" alt=""/></li>
+                <li><img src="image/2.jpg" alt="" /></li>
+                <li><img src="image/3.jpg" alt="" /></li>
+                <li><img src="image/4.jpg" alt="" /></li>
+            </ul>
+            <ul class="num">
+                
+            </ul>
+            <div class="btn btn_l">&lt;</div>
+            <div class="btn btn_r">&gt;</div>
+  </div>
+<script type="text/javascript">
+
+            $(document).ready(function () {
+                var i = 0;//定义一个记录图片的索引
+                var flag=true;//用来检查动画的状态：动画运行完成为true，动画未完成为false
+                var t = setInterval(function () { i++; move();},2000);//自动轮播
+                var imgwidth=parseInt( $(".img img").eq(0).css("width") );//获取一张图片的宽度（理想情况下所有图片大小相同），这是为了之后计算轮播容器偏移的距离
+
+                var clone = $(".banner .img li").first().clone();//克隆第一张图片
+                $(".banner .img").append(clone);//复制到列表最后
+                var size = $(".banner .img li").length;//获取文档图片数量
+               
+                for (var j = 0; j < size-1; j++) {
+                    $(".banner .num").append("<li></li>");//生成标明图片的圆点
+                }
+
+                $(".banner .num li").first().addClass("on");//设置页面一加载的显示圆点
+
+
+                /*鼠标悬停事件*/
+                $(".banner").hover(function () {
+                    clearInterval(t);//鼠标移入时清除定时器
+                }, function () {
+                    t = setInterval(function () { i++; move(); }, 2000); //鼠标移出时启动定时器
+                });
+
+                /*鼠标滑入原点事件*/
+                $(".banner .num li").hover(function () {
+                    var index = $(this).index();//获取当前索引值
+                    i = index;
+                    $(".banner .img").stop().animate({ left: -index * imgwidth }, 500);
+                    $(this).addClass("on").siblings().removeClass("on");
+                });
+
+	       		/*向左按钮*/
+	       		$(".banner .btn_r").click(function () {
+	       			if(flag){//当动画完成时才能往后运动，这是为了避免快速点击按钮时造成轮播卡顿
+	                    i++;
+	                    move();
+	               }else{//动画未完成则退出事件
+	               		return ;
+	               }
+	            })
+	       		
+	       		/*向右按钮*/
+	            $(".banner .btn_l").click(function () {
+	            	if(flag){
+	                    i--;
+	                    move();
+	                  }else{
+	                  		return ;
+	                  }
+	            })
+
+                /*移动事件*/
+                function move() {
+                	flag=false;
+                    if (i == size) {//如果向右播到最后一张图片
+                        $(".banner .img").css({ left: 0 });//设置轮播容器距左为0
+                        i = 1;
+                    }
+                    if (i == -1) {//如果向左播到第一张图片
+                        $(".banner .img").css({ left: -(size - 1) * imgwidth });//设置轮播容器距左距离为整个容器的宽度
+                        i = size - 2;
+                    }
+                    //设置图片轮播动画
+                    $(".banner .img").stop().animate({ left: -i * imgwidth }, 500,function(){//动画完成之后执行的回调函数
+                    	flag=true;//表明动画已完成
+                    });
+
+                    if (i == size - 1) {//当运行到克隆的那一张图片时，第一个小圆点亮起来，因为此时的文档图片有5张(其中一张是克隆后添加在最后的，为了无缝轮播)，而小圆点只有4个
+                        $(".banner .num li").eq(0).addClass("on").siblings().removeClass("on");
+                    } else {
+                        $(".banner .num li").eq(i).addClass("on").siblings().removeClass("on");
+                    }
+                }
+            });
+
+
+        </script>
+</body>
+</html>
