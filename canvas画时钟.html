@@ -35,7 +35,7 @@
 				/*对时分秒进行处理，计算最终值，精确指针在表盘里的指向*/
 				var oHoursValue = (-90 + oHours*30 + oMin/2) * Math.PI/180;
 				//-90是为了把指针指向表盘12点方向，以此为初始计算点
-				//1小时有60分钟，60/2刚好是时针转一个刻度的度数
+				//oMin/2     ->    (oMin/60)*30
 				//最后乘以Math.PI/180是将数值转化为度数，因为context的arc方法的第三、四个参数是只能用度数的
 				var oMinValue = (-90 + oMin*6) * Math.PI/180;
 				var oSecValue = (-90 + oSec*6) * Math.PI/180;
